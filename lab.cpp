@@ -1,6 +1,5 @@
 #include "lab.hpp"
-const int N = 7; // число звеньев в цепочке проверяющих акторов (не считая конечное звено - актор end)
-// => всего найденных чисел будет N+1
+const int N = 4; // число звеньев в цепочке проверяющих акторов
 
 int main (){
         
@@ -11,7 +10,7 @@ int main (){
     CheckStage stages[N];
     End   endStage(eng);
         
-    beginStage.max_stages_num = 30;
+    beginStage.max_elements_num = 30;
         
     sequence_element* last_check_stage = &beginStage.out; // в начальный актор передаем ссылку на первый проверяющий в цепочке
     endStage.in(stages[N-1].out); // в финальный актор передаем ссылку на последний проверяющий в цепочке

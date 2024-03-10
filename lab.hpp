@@ -66,7 +66,7 @@ struct Begin :public templet::actor {
 /*$TET$Begin$out*/
 
         cout << "--- Отправка элемента последовательности из начального актора" << endl;
-        if (stages_num < max_stages_num)
+        if (stages_num < max_elements_num)
         {
             out.n = stages_num;
             stages_num++;
@@ -81,8 +81,8 @@ struct Begin :public templet::actor {
 
 /*$TET$Begin$$footer*/
 
-    int stages_num;
-    int max_stages_num;
+    int stages_num; // значение проверяемого элемента = итератору цикла
+    int max_elements_num; // максимальное число элементов в последовательности
 
 /*$TET$*/
 };
