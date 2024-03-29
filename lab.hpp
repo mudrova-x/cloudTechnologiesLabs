@@ -65,10 +65,11 @@ struct Begin :public templet::actor {
 	inline void on_out(sequence_element&m) {
 /*$TET$Begin$out*/
 
-        cout << "--- Отправка элемента последовательности из начального актора" << endl;
+        //cout << "--- Отправка элемента последовательности из начального актора" << endl;
         if (stages_num < max_elements_num)
         {
             out.n = stages_num;
+            cout << "--- Отправка элемента последовательности "<< stages_num << " из начального актора Begin" << endl;
             stages_num++;
             // cout << out.n << endl; // remove
             out.send();
@@ -128,18 +129,18 @@ struct CheckStage :public templet::actor {
 
 	inline void on_out(sequence_element&m) {
 /*$TET$CheckStage$out*/
-        cout << "------ Возврат к предыдущему актору. stage_id текущего = " << stage_id << endl;
-        _in->send();
+        check_element();
 /*$TET$*/
 	}
 
 	inline void on_t(templet::basesim_task&t) {
 /*$TET$CheckStage$t*/
-        t.delay(10); // TODO: поменять потом после проверок
+        t.delay(1000); // TODO: поменять потом после проверок
         if (_in->n % saved_number != 0)
         {
             cout << "------ " << _in->n << " не кратно числу " << saved_number << endl;
             out.n = _in->n;
+            _in->send();
             out.send();
         }
         else
@@ -160,11 +161,11 @@ struct CheckStage :public templet::actor {
     void check_element()
     {
         if (access(_in) && access(out)){
-            cout << "------ Проверка элемента последовательности " << _in -> n << " на этапе № " << stage_id << endl;
+            cout << "------ Проверка элемента последовательности " << _in -> n << " в акторе со stage_id = " << stage_id << endl;
             if (saved_number == 0)
             {
                 saved_number = _in->n;
-                cout << "------ Сохранение элемента " << saved_number << " на этапе № " << stage_id << endl;
+                cout << "------ Сохранение элемента " << saved_number << " в акторе со stage_id = " << stage_id << endl;
                 
                 cout << "---------------------------------"<< endl;
                 cout << "|   НАЙДЕНО ПРОСТОЕ ЧИСЛО: " << saved_number << "   |"<< endl;
@@ -213,7 +214,7 @@ struct End :public templet::actor {
 	inline void on_in(sequence_element&m) {
 /*$TET$End$in*/
         last_number = m.n;
-        cout << "--- Сохранение последнего элемента " << last_number << endl;
+        cout << "--- Сохранение последнего элемента в акторе End" << last_number << endl;
         
         cout << "---------------------------------"<< endl;
         cout << "|   ПОСЛЕДНЕЕ ПРОСТОЕ ЧИСЛО: "    << last_number << "   |"<< endl;
